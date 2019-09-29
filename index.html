@@ -11,27 +11,29 @@
 <body>
     <div id="wrapper">
         <h1>Welcome to my Fruit-Themed Hangman Game!</h1>
-        <p id="word-to-guess-text"></p>
+        <p id="word-to-guess-text">Push any key to begin.</p>
         <p id="guessed-letters-text">Letters Guess: </p>
         <p id="message-text">Choose a letter to begin!</p>
         <p id="lives-left"></p>
         <p id="wins-text">Wins: 0</p>
-        <p id="losses-text">Losses: 0</p>
+        <p>Losses:<b id="losses-text">0</b></p>
+        <button id="reset-button" onclick="resetButton();">Play Again?</button>
     </div>
 
     <script>
-        var guessesRemaining = 7;
+        var guessesRemaining = 10;
         //How many wins the player has
         var wins = 0;
 
         //How many losses the player has
         var losses = 0;
+        var lossesText = document.getElementById("losses-text").innerHTML = losses;
 
         // Letters chosen should be pushed to this array and emptied when you win or lose
         var lettersGuessed = [];
 
         //This contains possible words to guess
-        var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat"]
+        var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat", "honeydew", "blueberry", "mango", "soursop", "lemon", "rasberry", "strawberry", "blackberry", "cranberry", "peach", "nectarine", "cherry", "date", "lychee", "grape", "guava", "kiwi", "lime", "passionfruit", "pomegranate"]
 
         //This variable is random word from the categories array
         var chosenWord = categories[Math.floor(Math.random() * categories.length)];
@@ -44,11 +46,11 @@
             win: "You win this round!",
             lose: "You didn't guess the word! Play Again?",
             incorrect: "That was incorrect, try another letter",
-            guessed: "You already guessed that letter, Try again",
+            guessed: "You already guessed that letter, try a different letter",
         };
 
 
-        var wordHolder = document.getElementById("word-to-guess-text");
+        var wordHolder = document.getElementById("word-to-guess-text").innerHTML;
         var lettersGuessedText = document.getElementById("guessed-letters-text");
         var livesLeftText = document.getElementById("lives-left");
         livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
@@ -57,7 +59,8 @@
 
         livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
 
-        //This function pushes guessed letters 
+
+        //This function pushes guessed letters to the lettersGuess array 
         document.onkeyup = function (event) {
             var userGuess = event.key.toLowerCase();
 
@@ -66,20 +69,28 @@
                 lettersGuessed.push(userGuess);
                 guessesRemaining -= 1;
                 messageBoxText.innerHTML = messages.incorrect;
+            } else {
+                messageBoxText.innerHTML = messages.guessed;
+            };
+
+            // Checks if any guesses are remaining otherwise displays lose message
+            if ((guessesRemaining < 1) && (guessesRemaining > -1)) {
+                messageBoxText.innerHTML = messages.lose;
+                losses += 1;
+                document.getElementById("losses-text").innerHTML = losses;
             };
 
             //Updates guesses left and letters you guess
             livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
             lettersGuessedText.innerHTML = "Letters Guessed: " + lettersGuessed;
-
-            // Checks if any guesses are remaining otherwise displays lose message
-            if (guessesRemaining < 1) {
-                losses = losses + 1;
-                messageBoxText.innerHTML = messages.lose;
-            }
         };
 
-
+        //This button resets the guesses remaining and chooses a new word
+        function resetButton() {
+            guessesRemaining = 10;
+            chosenWord = categories[Math.floor(Math.random() * categories.length)];
+            console.log(chosenWord + " is the chosen word");
+        };
 
     </script>
 </body>
