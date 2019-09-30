@@ -31,6 +31,7 @@
 
         // Letters chosen should be pushed to this array and emptied when you win or lose
         var lettersGuessed = [];
+        var wordToGuess = [];
 
         //This contains possible words to guess
         var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat", "honeydew", "blueberry", "mango", "soursop", "lemon", "rasberry", "strawberry", "blackberry", "cranberry", "peach", "nectarine", "cherry", "date", "lychee", "grape", "guava", "kiwi", "lime", "passionfruit", "pomegranate"]
@@ -45,10 +46,10 @@
         var messages = {
             win: "You win this round!",
             lose: "You didn't guess the word! Play Again?",
+            correct: "That letter was correct! Pick another one.",
             incorrect: "That was incorrect, try another letter",
             guessed: "You already guessed that letter, try a different letter",
         };
-
 
         var wordHolder = document.getElementById("word-to-guess-text").innerHTML;
         var lettersGuessedText = document.getElementById("guessed-letters-text");
@@ -59,30 +60,51 @@
 
         livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
 
+        for (var i = 0; i < chosenWord.length; i++) {
+            wordToGuess.push("_");
+            wordToGuess.join("");
+            document.getElementById("word-to-guess-text").innerHTML = wordToGuess.join(" ");
+        };
 
         //This function pushes guessed letters to the lettersGuess array 
         document.onkeyup = function (event) {
             var userGuess = event.key.toLowerCase();
+            console.log(userGuess);
 
-            //Pushes the guess to the array if it isn't already used. If it isn't it subtracts one from remaining guesses
+            for (let i = 0; i < chosenWord.length; i++) {
+                if (chosenWord[i].indexOf(userGuess) === -1) {
+                    wordToGuess[i] == userGuess;
+                    wordHolder = wordToGuess;
+                }
+            }
+
+            // if (chosenWord.indexOf(userGuess) === -1) {
+            //     wordToGuess.indexOf(chosenWord[userGuess]) == userGuess;
+            //     console.log(chosenWord.indexOf(userGuess));
+            //     wordHolder = wordToGuess.join(" ");
+            //     console.log(wordToGuess);
+            //     messageBoxText.innerHTML = messages.correct;
+            // };
+
             if (lettersGuessed.indexOf(userGuess) === -1) {
                 lettersGuessed.push(userGuess);
                 guessesRemaining -= 1;
+                console.log("you have " + guessesRemaining + " guesses remaining");
                 messageBoxText.innerHTML = messages.incorrect;
             } else {
                 messageBoxText.innerHTML = messages.guessed;
             };
 
-            // Checks if any guesses are remaining otherwise displays lose message
-            if ((guessesRemaining < 1) && (guessesRemaining > -1)) {
+            if (guessesRemaining < 1) {
                 messageBoxText.innerHTML = messages.lose;
-                losses += 1;
-                document.getElementById("losses-text").innerHTML = losses;
+                console.log(messages.lose);
             };
+
 
             //Updates guesses left and letters you guess
             livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
             lettersGuessedText.innerHTML = "Letters Guessed: " + lettersGuessed;
+
         };
 
         //This button resets the guesses remaining and chooses a new word
@@ -90,7 +112,21 @@
             guessesRemaining = 10;
             chosenWord = categories[Math.floor(Math.random() * categories.length)];
             console.log(chosenWord + " is the chosen word");
+
+            for (var i = 0; i < chosenWord.length; i++) {
+                wordToGuess.push("_");
+                document.getElementById("word-to-guess-text").innerHTML = wordToGuess.join(" ");
+            }
+
+            wordToGuess = [];
+            lettersGuessed = [];
+
+            lettersGuessedText.innerHTML = "Letters Guessed: " + lettersGuessed;
+            livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
         };
+
+
+
 
     </script>
 </body>
