@@ -12,7 +12,7 @@
     <div id="wrapper">
         <h1>Welcome to my Fruit-Themed Hangman Game!</h1>
         <p id="word-to-guess-text">Push any key to begin.</p>
-        <p id="guessed-letters-text">Letters Guess: </p>
+        <p id="guessed-letters-text">Letters Guessed: </p>
         <p id="message-text">Choose a letter to begin!</p>
         <p id="lives-left"></p>
         <p id="wins-text">Wins: 0</p>
@@ -24,6 +24,7 @@
         var guessesRemaining = 10;
         //How many wins the player has
         var wins = 0;
+        var winsText = document.getElementById("wins-text").innerHTML;
 
         //How many losses the player has
         var losses = 0;
@@ -60,51 +61,96 @@
 
         livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
 
+        //This create the spaces for the letter you need to guess at the length of the chosenWord
         for (var i = 0; i < chosenWord.length; i++) {
             wordToGuess.push("_");
             wordToGuess.join("");
             document.getElementById("word-to-guess-text").innerHTML = wordToGuess.join(" ");
         };
 
-        //This function pushes guessed letters to the lettersGuess array 
+        //This function checks if you pushed a-z and converts it to lowercase 
         document.onkeyup = function (event) {
-            var userGuess = event.key.toLowerCase();
-            console.log(userGuess);
-
-            for (let i = 0; i < chosenWord.length; i++) {
-                if (chosenWord[i].indexOf(userGuess) === -1) {
-                    wordToGuess[i] == userGuess;
-                    wordHolder = wordToGuess;
-                }
+            if (event.keyCode >= 65 && event.keyCode <= 90) {
+                userGuess(event.key.toLowerCase());
             }
+        };
 
-            // if (chosenWord.indexOf(userGuess) === -1) {
-            //     wordToGuess.indexOf(chosenWord[userGuess]) == userGuess;
-            //     console.log(chosenWord.indexOf(userGuess));
-            //     wordHolder = wordToGuess.join(" ");
-            //     console.log(wordToGuess);
-            //     messageBoxText.innerHTML = messages.correct;
-            // };
-
-            if (lettersGuessed.indexOf(userGuess) === -1) {
-                lettersGuessed.push(userGuess);
-                guessesRemaining -= 1;
+        // This function takes whatever letter you pushed and checks if matches any of the the selected word letters
+        function userGuess(letter) {
+            if (lettersGuessed.indexOf(letter) === -1) {
+                lettersGuessed.push(letter);
+                checkGuess(letter);
                 console.log("you have " + guessesRemaining + " guesses remaining");
                 messageBoxText.innerHTML = messages.incorrect;
             } else {
                 messageBoxText.innerHTML = messages.guessed;
             };
 
-            if (guessesRemaining < 1) {
+            updateDisplay();
+            checkForWin();
+        };
+        // var userGuess = event.key.toLowerCase();
+        // console.log(userGuess);
+
+        // // for (let i = 0; i < chosenWord.length; i++) {
+        // //     if (chosenWord[i] === userGuess) {
+        // //         wordToGuess.push(i);
+        // //         wordHolder == wordToGuess;
+        //     } else if (lettersGuessed.indexOf(userGuess) === -1) {
+        //     lettersGuessed.push(userGuess);
+        //     guessesRemaining -= 1;
+        //     console.log("you have " + guessesRemaining + " guesses remaining");
+        //     messageBoxText.innerHTML = messages.incorrect;
+        // } else {
+        //     messageBoxText.innerHTML = messages.guessed;
+        //     //     };
+        // };
+
+        // if (chosenWord.indexOf(userGuess) === -1) {
+        //     wordToGuess.indexOf(chosenWord[userGuess]) == userGuess;
+        //     console.log(chosenWord.indexOf(userGuess));
+        //     wordHolder = wordToGuess.join(" ");
+        //     console.log(wordToGuess);
+        //     messageBoxText.innerHTML = messages.correct;
+        // };
+
+        function updateDisplay() {
+            for (let i = 0; i < wordToGuess.length; i++) {
+                document.getElementById("word-to-guess-text").innerText += wordToGuess[i];
+            }
+            livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
+            lettersGuessedText.innerHTML = "Letters Guessed: " + lettersGuessed;
+            winsText = "Wins: " + wins;
+            if (guessesRemaining <= 0) {
+                messageBoxText.innerHTML = messages.lose;
+            }
+        };
+
+        function checkForWin() {
+            if (wordToGuess.indexOf("_") === -1) {
+                winsText = "Wins: " + (wins++);
+                messageBoxText.innerHTML = messages.win;
+            } else if (guessesRemaining < 1) {
                 messageBoxText.innerHTML = messages.lose;
                 console.log(messages.lose);
             };
+        };
 
-
-            //Updates guesses left and letters you guess
-            livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
-            lettersGuessedText.innerHTML = "Letters Guessed: " + lettersGuessed;
-
+        function checkGuess(letter) {
+            var letterPostions = [];  //Stores letter Positions
+            for (let i = 0; i < chosenWord.length; i++) {
+                if (chosenWord[i] === letter) {
+                    wordToGuess.push(i);
+                }
+            }
+            if (letterPostions.length <= 0) {
+                guessesRemaining -= 1;
+            } else {
+                for (let g = 0; g < letterPostions.length; i++) {
+                    wordToGuess[chosenWord[i]] = letter;
+                }
+            }
+            updateDisplay();
         };
 
         //This button resets the guesses remaining and chooses a new word
