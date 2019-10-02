@@ -13,7 +13,7 @@ var lettersGuessed = [];
 var wordToGuess = [];
 
 //This contains possible words to guess
-var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat", "honeydew", "blueberry", "mango", "soursop", "lemon", "rasberry", "strawberry", "blackberry", "cranberry", "peach", "nectarine", "cherry", "date", "lychee", "grape", "guava", "kiwi", "lime", "passionfruit", "pomegranate"];
+var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat", "honeydew", "blueberry", "mango", "soursop", "lemon", "raspberry", "strawberry", "blackberry", "cranberry", "peach", "nectarine", "cherry", "date", "lychee", "grape", "guava", "kiwi", "lime", "passionfruit", "pomegranate", "mangosteen", "starfruit"];
 
 //This variable is random word from the categories array
 var chosenWord = categories[Math.floor(Math.random() * categories.length)];
