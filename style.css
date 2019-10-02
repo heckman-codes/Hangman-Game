@@ -1,0 +1,65 @@
+body {
+    background-color: #8db600;
+    margin: 0;
+}
+
+#wrapper {
+
+    height: 100vmax;
+    margin: 0 auto;
+    padding-top: 50px;
+    width: 700px;
+    text-align: center;
+    background-color: white;
+}
+
+h1, h2, h3, p {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+    margin: 30px auto 30px auto;
+    font-size: 55px;
+    text-transform: uppercase;
+    color: white;
+}
+
+h2 {
+    margin: 0px auto 0 auto;
+}
+
+h3 {
+    margin: 20px auto 20px auto;
+}
+
+#main-display { 
+    margin: 0 auto;
+    background: #8db600;
+    width: 600px;
+    border-radius: 10px;
+}
+
+#guessed-box {
+    margin: 0 auto;
+    height: 100px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: lightgray;
+}
+
+.message-diplay {
+    font-size: 100px;
+}
+
+button {
+    padding: 10px 20px 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    color: white;
+    background-color: #8db600;
+    border-color: #e6fc9d;
+    border-radius: 10px;
+    font-size: 40px;
+
+}
+

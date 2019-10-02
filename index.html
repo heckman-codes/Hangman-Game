@@ -5,46 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <title>Liam's Hangman Game</title>
 </head>
 
 <body>
     <div id="wrapper">
-        <h1>Welcome to my Fruit-Themed Hangman Game!</h1>
-        <p id="word-to-guess-text">Push any key to begin.</p>
-        <p id="guessed-letters-text">Letters Guessed: </p>
+        <h2><img src="assets/images/hangman_logo.png" style="width:70%;"></h2>
+        <p id="message-text" class="message-display">Choose a letter to begin!</p>
+        <div id="main-display">
+            <h1 id="word-to-guess-text">Push any key to begin.</h1>
+        </div>
+        <div id="guessed-box">
+            <h3>Letters Guessed:</h3>
+            <h3 id="guessed-letters-text"></h3>
+        </div>
         <p id="message-text">Choose a letter to begin!</p>
         <p id="lives-left"></p>
         <p id="wins-text">Wins: 0</p>
-        <p>Losses:<b id="losses-text">0</b></p>
+        <!-- <p>Losses:<b id="losses-text">0</b></p> -->
         <button id="reset-button" onclick="resetButton();">Play Again?</button>
     </div>
 
     <script>
-        var guessesRemaining = 10;
+        var guessesRemaining = 5;
+
         //How many wins the player has
         var wins = 0;
-        var winsText = document.getElementById("wins-text").innerHTML;
+        var winsText = document.getElementById("wins-text");
 
         //How many losses the player has
         var losses = 0;
-        var lossesText = document.getElementById("losses-text").innerHTML = losses;
+        // var lossesText = document.getElementById("losses-text").innerHTML;
 
         // Letters chosen should be pushed to this array and emptied when you win or lose
         var lettersGuessed = [];
         var wordToGuess = [];
 
         //This contains possible words to guess
-        var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat", "honeydew", "blueberry", "mango", "soursop", "lemon", "rasberry", "strawberry", "blackberry", "cranberry", "peach", "nectarine", "cherry", "date", "lychee", "grape", "guava", "kiwi", "lime", "passionfruit", "pomegranate"]
+        var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat", "honeydew", "blueberry", "mango", "soursop", "lemon", "rasberry", "strawberry", "blackberry", "cranberry", "peach", "nectarine", "cherry", "date", "lychee", "grape", "guava", "kiwi", "lime", "passionfruit", "pomegranate"];
 
         //This variable is random word from the categories array
         var chosenWord = categories[Math.floor(Math.random() * categories.length)];
         console.log(chosenWord + " is the chosen word");
-
         var messageBoxText = document.getElementById("message-text");
 
         //This objects contains all the messages that can occur during this game
         var messages = {
+            begin: "Choose a letter to begin!",
             win: "You win this round!",
             lose: "You didn't guess the word! Play Again?",
             correct: "That letter was correct! Pick another one.",
@@ -57,8 +66,6 @@
         var livesLeftText = document.getElementById("lives-left");
         livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
         console.log(livesLeftText.innerHTML);
-
-
         livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
 
         //This create the spaces for the letter you need to guess at the length of the chosenWord
@@ -78,13 +85,12 @@
         function userGuess(letter) {
             if (lettersGuessed.indexOf(letter) === -1) {
                 lettersGuessed.push(letter);
+                lettersGuessed.join(" ");
                 checkGuess(letter);
                 console.log("you have " + guessesRemaining + " guesses remaining");
-                messageBoxText.innerHTML = messages.incorrect;
             } else {
                 messageBoxText.innerHTML = messages.guessed;
             };
-
             updateDisplay();
             checkForWin();
         };
@@ -94,66 +100,74 @@
             var letterPostions = [];  //Stores letter Positions
             for (var g = 0; g < chosenWord.length; g++) {
                 if (chosenWord[g] === letter) {
+                    letterPostions.push(g);
                     wordToGuess[g] = letter;
                     wordToGuess.join(" ");
                 }
             };
 
             if (letterPostions.length <= 0) {
-                guessesRemaining -= 1;
+                guessesRemaining--;
+                messageBoxText.innerHTML = messages.incorrect;
             } else {
                 for (var g = 0; g < letterPostions.length; g++) {
                     wordToGuess[chosenWord[g]] = letter;
                 }
+                messageBoxText.innerHTML = messages.correct;
             }
+            console.log(letterPostions);
             updateDisplay();
         };
+
+        document.getElementById("reset-button").style.visibility = "hidden";
 
         function updateDisplay() {
             // for (let i = 0; i < wordToGuess.length; i++) {
             document.getElementById("word-to-guess-text").innerText = wordToGuess.join(" ");
             // }
+            winsText.innerHTML = "Wins: " + wins;
             wordHolder = wordToGuess.join(" ");
             livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
-            lettersGuessedText.innerHTML = "Letters Guessed: " + lettersGuessed;
-            winsText = "Wins: " + wins;
+            lettersGuessedText.innerHTML = lettersGuessed.join(" ");
+            // lossesText = losses;
+
+
             if (guessesRemaining <= 0) {
                 messageBoxText.innerHTML = messages.lose;
-            }
+            };
+
         };
 
         function checkForWin() {
             if (wordToGuess.indexOf("_") === -1) {
-                winsText = "Wins: " + (wins++);
+                wins++;
+                console.log(wins);
                 messageBoxText.innerHTML = messages.win;
+                document.getElementById("reset-button").style.visibility = "visible";
             } else if (guessesRemaining < 1) {
+                losses++;
                 messageBoxText.innerHTML = messages.lose;
+                document.getElementById("reset-button").style.visibility = "visible";
                 console.log(messages.lose);
             };
+            updateDisplay();
         };
-
 
         //This button resets the guesses remaining and chooses a new word and updates the displays
         function resetButton() {
-            guessesRemaining = 10;
+            guessesRemaining = 5;
             chosenWord = categories[Math.floor(Math.random() * categories.length)];
             console.log(chosenWord + " is the chosen word");
-
+            messageBoxText.innerHTML = messages.begin;
             wordToGuess = [];
             lettersGuessed = [];
-
             for (var i = 0; i < chosenWord.length; i++) {
                 wordToGuess.push("_");
                 document.getElementById("word-to-guess-text").innerHTML = wordToGuess.join(" ");
             }
-
-            lettersGuessedText.innerHTML = "Letters Guessed: " + lettersGuessed;
-            livesLeftText.innerHTML = "You have " + guessesRemaining + " lives remaining";
-
+            document.getElementById("reset-button").style.visibility = "hidden";
             updateDisplay();
         };
-
-
 
 
     </script>
