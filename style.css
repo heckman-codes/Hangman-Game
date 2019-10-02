@@ -18,6 +18,7 @@ h1, h2, h3, p {
 }
 
 h1 {
+    padding: 10px 0px 10px 0px;
     margin: 30px auto 30px auto;
     font-size: 55px;
     text-transform: uppercase;
@@ -26,9 +27,19 @@ h1 {
 
 h2 {
     margin: 0px auto 0 auto;
+    font-weight: bold;
 }
 
+
 h3 {
+    margin: 10px auto 20px auto;
+}
+
+h3:first-child {
+    padding-top: 20px;
+}
+
+p {
     margin: 20px auto 20px auto;
 }
 
