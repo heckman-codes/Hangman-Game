@@ -13,7 +13,7 @@ var lettersGuessed = [];
 var wordToGuess = [];
 
 //This contains possible words to guess
-var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat", "honeydew", "blueberry", "mango", "soursop", "lemon", "raspberry", "strawberry", "blackberry", "cranberry", "peach", "nectarine", "cherry", "date", "lychee", "grape", "guava", "kiwi", "lime", "passionfruit", "pomegranate", "mangosteen", "starfruit", "boysenberry", "lingonberry", "cherimoya", "cantaloupe"];
+var categories = ["apple", "watermelon", "pear", "persimmon", "pineapple", "rambutan", "jackfruit", "durian", "peach", "banana", "apricot", "orange", "tangerine", "coconut", "kumquat", "honeydew", "blueberry", "mango", "soursop", "lemon", "raspberry", "strawberry", "blackberry", "cranberry", "peach", "nectarine", "cherry", "date", "lychee", "grape", "guava", "kiwi", "lime", "passionfruit", "pomegranate", "mangosteen", "starfruit", "boysenberry", "lingonberry", "cherimoya", "cantaloupe", "longan", "papaya"];
 
 //This variable is random word from the categories array
 var chosenWord = categories[Math.floor(Math.random() * categories.length)];
@@ -104,6 +104,7 @@ function updateDisplay() {
 
     // Diplsays the lose message if you run out of guesses
     if (guessesRemaining <= 0) {
+        lettersGuessedText.innerHTML = "The word was: " + chosenWord;
         messageBoxText.innerHTML = messages.lose;
     };
 
@@ -117,7 +118,6 @@ function checkForWin() {
         messageBoxText.innerHTML = messages.win;
         document.getElementById("reset-button").style.visibility = "visible";
     } else if (guessesRemaining < 1) {
-        // losses++;
         messageBoxText.innerHTML = messages.lose;
         document.getElementById("reset-button").style.visibility = "visible";
         console.log(messages.lose);

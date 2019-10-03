@@ -1,5 +1,5 @@
 body {
-    background-color: #8db600;
+    /* background-color: #8db600; */
     margin: 0;
 }
 
@@ -72,5 +72,9 @@ button {
     border-radius: 10px;
     font-size: 40px;
 
+}
+
+.win-counter {
+    font-size: 50px;
 }
 
